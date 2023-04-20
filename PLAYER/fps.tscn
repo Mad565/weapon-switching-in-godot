@@ -1,0 +1,103 @@
+[gd_scene load_steps=16 format=3 uid="uid://bk04fh73vpwe1"]
+
+[ext_resource type="Script" path="res://PLAYER/fps.gd" id="1_6w0wb"]
+[ext_resource type="Script" path="res://PLAYER/Hand.gd" id="2_fjojj"]
+[ext_resource type="Script" path="res://PLAYER/Gun2.gd" id="3_w66fi"]
+[ext_resource type="Script" path="res://PLAYER/Gun1.gd" id="4_eprfg"]
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_6qgcx"]
+
+[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_iw7xu"]
+
+[sub_resource type="Sky" id="Sky_b0e4i"]
+sky_material = SubResource("ProceduralSkyMaterial_iw7xu")
+
+[sub_resource type="Environment" id="Environment_tq8f0"]
+background_mode = 2
+sky = SubResource("Sky_b0e4i")
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_bso2m"]
+albedo_color = Color(1, 0, 0.027451, 1)
+
+[sub_resource type="BoxMesh" id="BoxMesh_n3d72"]
+material = SubResource("StandardMaterial3D_bso2m")
+size = Vector3(0.13, 0.219, 1)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_8juph"]
+albedo_color = Color(0.345098, 0.54902, 1, 1)
+
+[sub_resource type="BoxMesh" id="BoxMesh_2254p"]
+material = SubResource("StandardMaterial3D_8juph")
+size = Vector3(0.2, 0.2, 1)
+
+[sub_resource type="Animation" id="Animation_bkc8l"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Hand:rotation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector3(0, 0, 0)]
+}
+
+[sub_resource type="Animation" id="Animation_8teje"]
+resource_name = "SWITCH"
+length = 0.3
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Hand:rotation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.22643, 0.260608, 0.3),
+"transitions": PackedFloat32Array(1, 1, 1, 1),
+"update": 0,
+"values": [Vector3(-1.74707, 1.13097, 0.417134), Vector3(0, 0, 0), Vector3(0, 0, -0.0523599), Vector3(0, 0, 0)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_kom4v"]
+_data = {
+"RESET": SubResource("Animation_bkc8l"),
+"SWITCH": SubResource("Animation_8teje")
+}
+
+[node name="CharacterBody3D" type="CharacterBody3D"]
+script = ExtResource("1_6w0wb")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+shape = SubResource("CapsuleShape3D_6qgcx")
+
+[node name="Head" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.3, 0)
+
+[node name="Camera3D" type="Camera3D" parent="Head"]
+environment = SubResource("Environment_tq8f0")
+near = 0.001
+
+[node name="Hand" type="Node3D" parent="Head"]
+script = ExtResource("2_fjojj")
+
+[node name="Gun2" type="MeshInstance3D" parent="Head/Hand"]
+transform = Transform3D(0.01, 0, 0, 0, 0.01, 0, 0, 0, 0.01, 0.002, -0.002, -0.008)
+mesh = SubResource("BoxMesh_n3d72")
+script = ExtResource("3_w66fi")
+
+[node name="Gun1" type="MeshInstance3D" parent="Head/Hand"]
+transform = Transform3D(0.01, 0, 0, 0, 0.01, 0, 0, 0, 0.01, 0.002, -0.002, -0.008)
+mesh = SubResource("BoxMesh_2254p")
+script = ExtResource("4_eprfg")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="Head"]
+libraries = {
+"": SubResource("AnimationLibrary_kom4v")
+}
+
+[node name="RayCast3D" type="RayCast3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.389, 0)
+target_position = Vector3(0, 1, 0)

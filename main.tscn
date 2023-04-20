@@ -1,0 +1,48 @@
+[gd_scene load_steps=8 format=3 uid="uid://bu1tatw545qou"]
+
+[ext_resource type="PackedScene" uid="uid://bk04fh73vpwe1" path="res://PLAYER/fps.tscn" id="1_mmf2o"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_whsk5"]
+albedo_color = Color(0.298039, 0.298039, 0.298039, 1)
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_wlwkn"]
+material = SubResource("StandardMaterial3D_whsk5")
+
+[sub_resource type="ConvexPolygonShape3D" id="ConvexPolygonShape3D_imv7e"]
+points = PackedVector3Array(1.01587, 0.015873, 1.01587, -1.01587, -0.015873, -1.01587, -1.01587, 0.015873, -1.01587, 1.01587, -0.015873, -1.01587, -1.01587, -0.015873, 1.01587, -1.01587, 0.015873, 1.01587, 1.01587, 0.015873, -1.01587, 1.01587, -0.015873, 1.01587)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_5cuh7"]
+albedo_color = Color(1, 1, 0.435294, 1)
+metallic = 1.0
+
+[sub_resource type="BoxMesh" id="BoxMesh_l8lsv"]
+material = SubResource("StandardMaterial3D_5cuh7")
+size = Vector3(10, 1, 10)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_ye30v"]
+size = Vector3(10, 1, 10)
+
+[node name="StaticBody3D" type="StaticBody3D"]
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+transform = Transform3D(22, 0, 0, 0, 22, 0, 0, 0, 22, 0, 0, 0)
+mesh = SubResource("PlaneMesh_wlwkn")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+transform = Transform3D(22, 0, 0, 0, 22, 0, 0, 0, 22, 0, -0.23415, 0)
+shape = SubResource("ConvexPolygonShape3D_imv7e")
+
+[node name="MeshInstance3D2" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.96698, 0)
+mesh = SubResource("BoxMesh_l8lsv")
+
+[node name="CollisionShape3D2" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.96698, 0)
+shape = SubResource("BoxShape3D_ye30v")
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, -0.30212, 0.95327, 0, -0.95327, -0.30212, 0, 6.37945, 0)
+shadow_enabled = true
+
+[node name="CharacterBody3D" parent="." instance=ExtResource("1_mmf2o")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.41826, 10.264)
